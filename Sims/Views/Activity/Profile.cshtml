@@ -1,0 +1,9 @@
+﻿@model Activity
+<div class="jumbotron margin">
+    <h1 class="display-3">@Model.Name</h1>
+    <hr class="my-4">
+    <p>@Model.Description</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg space" asp-action="Temp" asp-route-id="@Model.ActivityID" role="button">Temp</a>
+    </p>
+</div>

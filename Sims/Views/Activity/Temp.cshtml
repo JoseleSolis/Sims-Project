@@ -1,0 +1,11 @@
+﻿@model Activity
+
+@using (Html.BeginForm("Temp", "Activity", FormMethod.Post, new { id = "temp" }))
+{
+    @Html.HiddenFor(p => p.ActivityID)
+    @Html.HiddenFor(p => p.Name)
+    @Html.HiddenFor(p => p.Description)
+    <button type="submit" class="btn btn-primary">Accept</button>
+}
+
+
