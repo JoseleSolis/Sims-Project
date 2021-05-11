@@ -479,5 +479,16 @@ namespace Sims.Models.Data
             context.ActivityRequiresSkill.Add(activityRequiresSkill);
             context.SaveChanges();
         }
+        public ActivityRequiresSkill DeleteActivityRequiresSkill(Guid ActivityID, Guid SkillID)
+        {
+            ActivityRequiresSkill dbEntry = context.ActivityRequiresSkill
+            .FirstOrDefault(a => a.ActivityID == ActivityID && a.SkillID == SkillID);
+            if (dbEntry != null)
+            {
+                context.ActivityRequiresSkill.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
     }   
 }

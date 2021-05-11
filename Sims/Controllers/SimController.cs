@@ -92,7 +92,6 @@ namespace Sims.Controllers
                 simProfession.Level = exercise.Level;
             }
 
-
             return View(simProfession);
         }
 
@@ -148,7 +147,7 @@ namespace Sims.Controllers
         }
         */
        
-        /*
+        
         public ViewResult FilterForm()
         {
             SimSearchFilterForm form = new SimSearchFilterForm
@@ -168,7 +167,7 @@ namespace Sims.Controllers
                 .ToList();
 
             var professionCheck = new List<Sim>();
-            if (form.ProfessionID != 0)
+            if (form.ProfessionID.CompareTo(Guid.Empty) != 0)
             {
                 foreach (Sim sim in simPropsCheck)
                     if (repository.Exercises.FirstOrDefault(e => e.SimID == sim.SimID && e.ProfessionID == form.ProfessionID) != null)
@@ -178,11 +177,11 @@ namespace Sims.Controllers
 
             var bySkillPoints = new List<SimSkillPoints>();
             var simsBySkillPoints = new List<Sim>();
-            if (form.SkillID != 0)
+            if (form.SkillID.CompareTo(Guid.Empty) != 0)
             {
                 foreach (Sim sim in professionCheck)
                 {
-                    var simPoints = repository.SimSkills.FirstOrDefault(s => s.SimID == sim.SimID && s.SkillID == form.SkillID);
+                    var simPoints = repository.SimSkillsTable.FirstOrDefault(s => s.SimID == sim.SimID && s.SkillID == form.SkillID);
                     if (simPoints == null)
                         bySkillPoints.Add(new SimSkillPoints
                         {
@@ -201,15 +200,17 @@ namespace Sims.Controllers
                     simsBySkillPoints.Add(bySkillPoints[i].Sim);
             }
             else simsBySkillPoints = professionCheck;
+
+            var truncatedList = new List<Sim>();
+            int range = Math.Min(simsBySkillPoints.Count, form.FirstHowMany);
+            for (int i = 0; i < range; i++)
+                truncatedList.Add(simsBySkillPoints[i]);
             
-            simsBySkillPoints.
-            
-            return View(professionCheck);
-            
-            
+            return View(truncatedList);
+                      
         }
         
-        */  
+       
         
 
         public ViewResult Index() => View(repository.Sims);

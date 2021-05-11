@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Sims.Models;
 using Sims.Models.Data;
 using Sims.Models.Relations;
+using Sims.Models.ViewModels;
 
 namespace Sims.Controllers
 {
@@ -58,39 +59,49 @@ namespace Sims.Controllers
         }
 
         
-        /*
+        
         public ViewResult Requirements(Guid id)
         {
             ActivityRequirementsViewModel viewModel = new ActivityRequirementsViewModel
             {
                 Activity = repository.Activities.FirstOrDefault(a => a.ActivityID == id),
+                Skills = repository.Skills.ToList(),
             };
-
+            List<int> reqPoints = new List<int>();
+            for (int i = 0; i < viewModel.Skills.Count; i++)
+                reqPoints.Add(0);
+            viewModel.RequiredPoints = reqPoints;
             return View(viewModel);
         }
-        */
 
-
-        public ViewResult Temp(Guid id)
-        {
-            return View(repository.Activities.FirstOrDefault(a => a.ActivityID == id));
-        }
         [HttpPost]
-        public ActionResult Temp(Activity ac)
+        public ActionResult Requirements(ActivityRequirementsViewModel viewModelPost)
         {
-            ActivityRequiresSkill asd = new ActivityRequiresSkill
+            List<ActivityRequiresSkill> activityRequiresSkills = new List<ActivityRequiresSkill>();
+            for (int i = 0; i < viewModelPost.Skills.Count; i++)
             {
-                Activity = repository.Activities.First(x=>x.ActivityID == ac.ActivityID),
-                RequiredPoints = 2,
-                Skill = repository.Skills.First()
-            };
-            if (ModelState.IsValid)
-            {
-                repository.SaveActivityRequiresSkill(asd);
+                if (viewModelPost.RequiredPoints[i] > 0)
+                {
+                    activityRequiresSkills.Add(new ActivityRequiresSkill
+                    {
+                        Skill = repository.Skills.FirstOrDefault(s => s.SkillID == viewModelPost.Skills[i].SkillID),
+                        Activity = repository.Activities.FirstOrDefault(a=>a.ActivityID == viewModelPost.Activity.ActivityID),
+                        RequiredPoints = viewModelPost.RequiredPoints[i]
+                    });
+                }
             }
 
-            return View("Index");
+
+            var toDelete = repository.ActivityRequiresSkillsTable.Where(a => a.ActivityID == viewModelPost.Activity.ActivityID).ToList();
+            foreach (ActivityRequiresSkill item in toDelete)
+                repository.DeleteActivityRequiresSkill(item.ActivityID, item.SkillID);
+
+            foreach (ActivityRequiresSkill item in activityRequiresSkills)
+                repository.SaveActivityRequiresSkill(item);
+
+            return RedirectToAction("Index");
         }
-        
+
+
     }
 }

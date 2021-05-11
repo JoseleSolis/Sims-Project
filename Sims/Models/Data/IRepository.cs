@@ -58,6 +58,7 @@ namespace Sims.Models.Data
 
 
         void SaveActivityRequiresSkill(ActivityRequiresSkill activityRequiresSkill);
+        ActivityRequiresSkill DeleteActivityRequiresSkill(Guid ActivityID, Guid SkillID);
         void SaveDomesticUnit(DomesticUnit domesticUnit);
         DomesticUnit DeleteDomesticUnit(Guid domesticUnitID);
         void SaveExercise(Exercise exercise);
