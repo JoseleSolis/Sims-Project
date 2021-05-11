@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Sims.Models;
 using Sims.Models.Data;
 
-namespace TheSims.Controllers
+namespace Sims.Controllers
 {
     public class SkillController : Controller
     {

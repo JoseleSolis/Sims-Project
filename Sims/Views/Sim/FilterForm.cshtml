@@ -1,0 +1,35 @@
+﻿@model SimSearchFilterForm
+<h2>Fill the spaces so you filter the list of Sims to be displayed</h2>
+
+@using (Html.BeginForm("List", "Sim"))
+{
+<div class="form-group">
+    @Html.LabelFor(m => m.Sim.Name)
+    @Html.ValidationMessageFor(m => m.Sim.Name)
+    @Html.TextBoxFor(m => m.Sim.Name, new { @class = "form-control" })
+</div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Sim.LastName)
+        @Html.ValidationMessageFor(m => m.Sim.LastName)
+        @Html.TextBoxFor(m => m.Sim.LastName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.ProfessionID)
+        @Html.DropDownListFor(p => p.ProfessionID, new SelectList(Model.Professions, "ProfessionID", "Name"), "", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.SkillID)
+        @Html.DropDownListFor(p => p.SkillID, new SelectList(Model.Skills, "SkillID", "Name"), "", new { @class = "form-control" })
+    </div>
+   
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstHowMany)
+        @Html.ValidationMessageFor(m => m.FirstHowMany)
+        @Html.TextBoxFor(m => m.FirstHowMany, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+}

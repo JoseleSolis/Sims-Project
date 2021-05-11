@@ -1,0 +1,28 @@
+﻿@model PlaceNeighborhoodViewModel
+
+
+@if (Model.CurrentNeighborhoodName != null)
+{
+    <div class="margin">
+        <p>
+            @Model.Place.Name is currently located in @Model.CurrentNeighborhoodName
+        </p>
+    </div>
+}
+@using (Html.BeginForm("Neighborhood", "Place", FormMethod.Post, new { id = "palceNeighborhood" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(n => n.NeighborhoodID)
+        @Html.DropDownListFor(n => n.NeighborhoodID, new SelectList(Model.Neighborhoods, "NeighborhoodID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Place.PlaceID)
+    @Html.HiddenFor(p => p.Place.Name)
+    @Html.HiddenFor(p => p.Place.Cost)
+    @Html.HiddenFor(p => p.Place.Description)
+
+
+    <button type="submit" class="btn btn-primary">Accept</button>
+    <a asp-action="Profile" asp-route-id="@Model.Place.PlaceID" class="btn btn-secondary">Cancel</a>
+
+}

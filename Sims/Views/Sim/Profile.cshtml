@@ -1,0 +1,13 @@
+﻿@model Sim
+    <div class="jumbotron margin" >
+        <h1 class="display-3">@Model.Name @Model.LastName</h1>
+        <p class="lead">Sim of @Model.Gender gender</p>
+        <hr class="my-4">
+        <p>Currently owns @Model.Money simoleons</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" asp-controller="Sim" asp-action="ChooseProfession" asp-route-id="@Model.SimID" role="button">Profession</a>
+            <a class="btn btn-secondary btn-lg" asp-controller="Sim" asp-action="ChooseDomesticUnit" asp-route-id="@Model.SimID" role="button">Domestic Unit</a>
+            <a class="btn btn-primary btn-lg" asp-controller="Sim" asp-action="Skills" asp-route-id="@Model.SimID" role="button">Skills</a>
+            <a class="btn btn-secondary btn-lg space" asp-controller="Sim" asp-action="Activities" asp-route-id="@Model.SimID" role="button">Activities</a>
+        </p>
+    </div>

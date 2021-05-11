@@ -7,7 +7,7 @@ using Sims.Models;
 using Sims.Models.Data;
 using Sims.Models.Relations;
 
-namespace TheSims.Controllers
+namespace Sims.Controllers
 {
     public class ActivityController : Controller
     {
@@ -45,9 +45,9 @@ namespace TheSims.Controllers
 
         public ViewResult Create() => View("Edit", new Activity());
 
-        /*
+        
         [HttpPost]
-        public IActionResult Delete(int activityID)
+        public IActionResult Delete(Guid activityID)
         {
             Activity deletedActivity = repository.DeleteActivity(activityID);
             if (deletedActivity != null)
@@ -58,7 +58,8 @@ namespace TheSims.Controllers
         }
 
         
-        public ViewResult Requirements(int id)
+        /*
+        public ViewResult Requirements(Guid id)
         {
             ActivityRequirementsViewModel viewModel = new ActivityRequirementsViewModel
             {
@@ -69,6 +70,7 @@ namespace TheSims.Controllers
         }
         */
 
+
         public ViewResult Temp(Guid id)
         {
             return View(repository.Activities.FirstOrDefault(a => a.ActivityID == id));
@@ -78,7 +80,7 @@ namespace TheSims.Controllers
         {
             ActivityRequiresSkill asd = new ActivityRequiresSkill
             {
-                Activity = ac,
+                Activity = repository.Activities.First(x=>x.ActivityID == ac.ActivityID),
                 RequiredPoints = 2,
                 Skill = repository.Skills.First()
             };

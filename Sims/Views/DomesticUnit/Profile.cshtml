@@ -1,0 +1,10 @@
+﻿@model DomesticUnit
+<div class="jumbotron margin">
+    <h1 class="display-3">@Model.Name</h1>
+    <p class="lead">This domestic unit has @Model.RoomNumber rooms and @Model.BathroomNumber bathrooms</p>
+    <hr class="my-4">
+    <p>@Model.Description</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg space" asp-controller="DomesticUnit" asp-action="Neighborhood" asp-route-id="@Model.DomesticUnitID" role="button">Neighborhood</a>
+    </p>
+</div>

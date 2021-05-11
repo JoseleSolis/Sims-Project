@@ -1,0 +1,10 @@
+﻿@model Place
+<div class="jumbotron margin">
+    <h1 class="display-3">@Model.Name</h1>
+    <p class="lead">This place's services cost @Model.Cost simoleons</p>
+    <hr class="my-4">
+    <p>@Model.Description</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg space" asp-controller="Place" asp-action="Neighborhood" asp-route-id="@Model.PlaceID" role="button">Neighborhood</a>
+    </p>
+</div>

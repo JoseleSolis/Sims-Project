@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Sim>
+
+<table class="table table-striped table-bordered table-sm">
+    <tr>
+        <th class="text-right">ID</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Money</th>
+        <th>Gender</th>
+        <th>Life Stage</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-right">@item.SimID</td>
+            <td>
+                <a class="nav-link" asp-controller="Sim" asp-action="Profile" asp-route-id="@item.SimID">@item.Name</a>
+            </td>
+            <td>@item.LastName</td>
+            <td>@item.Money.ToString("c")</td>
+            <td>@item.Gender</td>
+            <td>@item.LifeStage</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,22 @@
+﻿@model SimActivityViewModel
+
+
+@using (Html.BeginForm("PerformActivity", "Sim", FormMethod.Post, new { id = "performActivity" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(p => p.ActivityID)
+        @Html.DropDownListFor(p => p.ActivityID, new SelectList(Model.Activities, "ActivityID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Sim.SimID)
+    @Html.HiddenFor(p => p.Sim.Name)
+    @Html.HiddenFor(p => p.Sim.LastName)
+    @Html.HiddenFor(p => p.Sim.Gender)
+    @Html.HiddenFor(p => p.Sim.Money)
+    @Html.HiddenFor(p => p.Sim.LifeStage)
+    
+
+    <button type="submit" class="btn btn-primary">Perform Activity</button>
+    <a asp-action="Profile" asp-route-id="@Model.Sim.SimID" class="btn btn-secondary">Cancel</a>
+
+}

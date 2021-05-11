@@ -1,0 +1,9 @@
+﻿@model Pet
+<div class="jumbotron margin">
+    <h1 class="display-3">@Model.Name</h1>
+    <hr class="my-4">
+    <p>This pet is a @Model.TypeName</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg space" asp-controller="Pet" asp-action="DomesticUnit" asp-route-id="@Model.PetID" role="button">Domestic Unit</a>
+    </p>
+</div>

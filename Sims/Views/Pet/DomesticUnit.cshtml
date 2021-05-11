@@ -1,0 +1,27 @@
+﻿@model PetDomesticUnitViewModel
+
+
+@if (Model.CurrentDomesticUnitName != null)
+{
+    <div class="margin">
+        <p>
+            @Model.Pet.Name currently lives in @Model.CurrentDomesticUnitName
+        </p>
+    </div>
+}
+@using (Html.BeginForm("DomesticUnit", "Pet", FormMethod.Post, new { id = "petDomesticUnit" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(n => n.DomesticUnitID)
+        @Html.DropDownListFor(n => n.DomesticUnitID, new SelectList(Model.DomesticUnits, "DomesticUnitID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Pet.PetID)
+    @Html.HiddenFor(p => p.Pet.Name)
+    @Html.HiddenFor(p => p.Pet.TypeName)
+    @Html.HiddenFor(p => p.Pet.Type)    
+
+    <button type="submit" class="btn btn-primary">Accept</button>
+    <a asp-action="Profile" asp-route-id="@Model.Pet.PetID" class="btn btn-secondary">Cancel</a>
+
+}

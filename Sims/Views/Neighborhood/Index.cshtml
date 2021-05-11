@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Neighborhood>
+@{
+    ViewBag.Title = "All Neighborhoods";
+    Layout = "_AdminLayout";
+
+}
+<table class="table table-striped table-bordered table-sm">
+    <tr>
+        <th class="text-right">ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th class="text-center"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-right">@item.NeighborhoodID</td>
+            <td>@item.Name</td>
+            <td>@item.Description</td>
+
+            <td class="text-center">
+                <form asp-action="Delete" method="post">
+                    <a asp-action="Edit" class="btn btn-sm btn-warning"
+                       asp-route-NeighborhoodID="@item.NeighborhoodID">
+                        Edit
+                    </a>
+                    <input type="hidden" name="NeighborhoodID" value="@item.NeighborhoodID" />
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+<div class="text-center">
+    <a asp-action="Create" class="btn btn-primary">Add Neighborhood</a>
+</div>
