@@ -1,0 +1,28 @@
+﻿@model ActivityImprovementViewModel
+
+
+@if (Model.CurrentImprovedSkillName != null)
+{
+    <div class="margin">
+        <p>
+            @Model.Activity.Name currently improves @Model.CurrentImprovedSkillName
+        </p>
+    </div>
+}
+
+@using (Html.BeginForm("Improvement", "Activity", FormMethod.Post, new { id = "actImprovement" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(p => p.SkillID)
+        @Html.DropDownListFor(p => p.SkillID, new SelectList(Model.Skills, "SkillID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Activity.ActivityID)
+    @Html.HiddenFor(p => p.Activity.Name)
+    @Html.HiddenFor(p => p.Activity.Description)
+
+
+    <button type="submit" class="btn btn-primary">Accept</button>
+    <a asp-action="Profile" asp-route-id="@Model.Activity.ActivityID" class="btn btn-secondary">Cancel</a>
+
+}

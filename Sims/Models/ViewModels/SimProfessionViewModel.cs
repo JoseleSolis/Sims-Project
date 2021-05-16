@@ -9,7 +9,7 @@ namespace Sims.Models.ViewModels
     public class SimProfessionViewModel
     {
         public Sim Sim { get; set; }
-        [Display(Name ="Profession")]
+        [Display(Name ="Change Profession")]
         public Guid ProfessionID { get; set; }
         public string CurrentProfessionName { get; set; }
         public int Level { get; set; }

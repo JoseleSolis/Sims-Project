@@ -1,0 +1,27 @@
+﻿@model ProfessionImprovesSkillViewModel
+
+
+@if (Model.CurrentImprovedSkill != null)
+{
+    <div class="margin">
+        <p>
+            @Model.Profession.Name currently improves @Model.CurrentImprovedSkill skill
+        </p>
+    </div>
+}
+@using (Html.BeginForm("ImproveSkill", "Profession", FormMethod.Post, new { id = "professionSkill" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(n => n.SkillID)
+        @Html.DropDownListFor(n => n.SkillID, new SelectList(Model.Skills, "SkillID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Profession.ProfessionID)
+    @Html.HiddenFor(p => p.Profession.Name)
+    @Html.HiddenFor(p => p.Profession.BasicSalary)
+
+
+    <button type="submit" class="btn btn-primary">Accept</button>
+    <a asp-action="Profile" asp-route-id="@Model.Profession.ProfessionID" class="btn btn-secondary">Cancel</a>
+
+}

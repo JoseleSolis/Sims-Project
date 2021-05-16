@@ -2,11 +2,13 @@
 
 
 @if (Model.CurrentProfessionName != null)
-{   
+{
     <div class="margin">
-    <p>
-        @Model.Sim.Name is currently a level @Model.Level @Model.CurrentProfessionName</p>
+        <p>
+            @Model.Sim.Name is currently a level @Model.Level @Model.CurrentProfessionName
+        </p>
     </div>
+    <a asp-action="Work" asp-route-id="@Model.Sim.SimID" class="btn btn-primary">Go to work</a>
 }
 @using (Html.BeginForm("ChooseProfession", "Sim", FormMethod.Post, new { id = "simProfession" }))
 {
@@ -21,9 +23,9 @@
     @Html.HiddenFor(p => p.Sim.Gender)
     @Html.HiddenFor(p => p.Sim.Money)
     @Html.HiddenFor(p => p.Sim.LifeStage)
-    
+
 
     <button type="submit" class="btn btn-primary">Accept</button>
-    <a asp-action="Profile" asp-route-id="@Model.Sim.SimID" class="btn btn-secondary">Cancel</a>
+    <a asp-action="Profile" asp-route-id="@Model.Sim.SimID" class="btn btn-secondary">Back</a>
 
 }

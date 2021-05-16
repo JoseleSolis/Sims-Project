@@ -1,0 +1,8 @@
+﻿@model Neighborhood
+<div class="jumbotron margin">
+    <h1 class="display-3">@Model.Name</h1>
+    <p>@Model.Description</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" asp-action="ImproveSkill" asp-route-id="@Model.NeighborhoodID" role="button">Improve Skill</a>
+    </p>
+</div>

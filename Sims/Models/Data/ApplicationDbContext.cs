@@ -33,6 +33,7 @@ namespace Sims.Models.Data
         public DbSet<NeighborhoodPlaces> NeighborhoodPlaces { get; set; }
         public DbSet<PetLives> PetLives { get; set; }
         public DbSet<ProfessionUpgradesSkill> ProfessionUpgradesSkill { get; set; }
+        public DbSet<NeighborhoodUpgradesSkill> NeighborhoodUpgradesSkill { get; set; }
         public DbSet<QuestRequiresSkill> QuestRequiresSkill { get; set; }
         public DbSet<SimLives> SimLives { get; set; }
         public DbSet<SimSkills> SimSkills { get; set; }
@@ -45,7 +46,8 @@ namespace Sims.Models.Data
             modelBuilder.Entity<Involve>().HasKey(m => new { m.SimID, m.Date, m.QuestID, m.WorldID });
             modelBuilder.Entity<Perform>().HasKey(m => new { m.SimID, m.ActivityID });
             modelBuilder.Entity<Travel>().HasKey(m => new { m.SimID, m.WorldID, m.Date });           
-            modelBuilder.Entity<ProfessionUpgradesSkill>().HasKey(m => new { m.ProfessionID, m.SkillID });            
+            modelBuilder.Entity<ProfessionUpgradesSkill>().HasKey(m => new { m.ProfessionID, m.SkillID });
+            modelBuilder.Entity<NeighborhoodUpgradesSkill>().HasKey(m => new { m.NeighborhoodID, m.SkillID });
             modelBuilder.Entity<SimSkills>().HasKey(m => new { m.SimID, m.SkillID });
             modelBuilder.Entity<QuestRequiresSkill>().HasKey(m => new { m.SkillID, m.QuestID });
 

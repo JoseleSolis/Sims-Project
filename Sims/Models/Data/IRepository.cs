@@ -27,6 +27,7 @@ namespace Sims.Models.Data
         IQueryable<NeighborhoodDomesticUnits> NeighborhoodDomesticUnitsTable { get; }
         IQueryable<NeighborhoodPlaces> NeighborhoodPlacesTable { get; }
         IQueryable<ProfessionUpgradesSkill> ProfessionUpgradesSkillsTable { get; }
+        IQueryable<NeighborhoodUpgradesSkill> NeighborhoodUpgradesSkillsTable { get; }
         IQueryable<PetLives> PetLivesTable { get; }
         IQueryable<SimLives> SimLivesTable { get; }
         IQueryable<SimSkills> SimSkillsTable { get; }
@@ -59,6 +60,10 @@ namespace Sims.Models.Data
 
         void SaveActivityRequiresSkill(ActivityRequiresSkill activityRequiresSkill);
         ActivityRequiresSkill DeleteActivityRequiresSkill(Guid ActivityID, Guid SkillID);
+        void SaveSimSkills(SimSkills simSkills);
+        SimSkills DeleteSimSkills(Guid SimID, Guid SkillID);
+        void SaveActivityImprovesSkill(ActivityImprovesSkill activityImprovesSkill);
+        ActivityImprovesSkill DeleteActivityImprovesSkill(Guid ActivityID);
         void SaveDomesticUnit(DomesticUnit domesticUnit);
         DomesticUnit DeleteDomesticUnit(Guid domesticUnitID);
         void SaveExercise(Exercise exercise);
@@ -67,10 +72,17 @@ namespace Sims.Models.Data
         SimLives DeleteSimLives(Guid simID);
         void SaveNeighborhoodDomesticUnit(NeighborhoodDomesticUnits neiDomesticUnit);
         NeighborhoodDomesticUnits DeleteNeighborhoodDomesticUnit(Guid id);
+        void SaveProfessionUpgradesSkill(ProfessionUpgradesSkill professionSkill);
+        ProfessionUpgradesSkill DeleteProfessionUpgradesSkill(Guid id);
+        void SaveNeighborhoodUpgradesSkill(NeighborhoodUpgradesSkill neighborhoodSkill);
+        NeighborhoodUpgradesSkill DeleteNeighborhoodUpgradesSkill(Guid id);
         void SavePetLives(PetLives petLives);
         PetLives DeletePetLives(Guid id);
         void SaveNeighborhoodPlace(NeighborhoodPlaces neighborhoodPlaces);
         NeighborhoodPlaces DeleteNeighborhoodPlace(Guid id);
+        void SavePerform(Perform performance);
+        Perform DeletePerform(Guid SimID,Guid ActivityID);
+        
 
 
 

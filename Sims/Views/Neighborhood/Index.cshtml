@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Neighborhood>
 @{
     ViewBag.Title = "All Neighborhoods";
-    Layout = "_AdminLayout";
 
 }
 <table class="table table-striped table-bordered table-sm">
@@ -15,7 +14,9 @@
     {
         <tr>
             <td class="text-right">@item.NeighborhoodID</td>
-            <td>@item.Name</td>
+            <td>
+                <a class="nav-link" asp-action="Profile" asp-route-id="@item.NeighborhoodID">@item.Name</a>
+            </td>
             <td>@item.Description</td>
 
             <td class="text-center">

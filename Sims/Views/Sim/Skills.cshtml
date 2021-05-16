@@ -1,20 +1,21 @@
-﻿@model IEnumerable<SimSkills>
+﻿@model SimSkillViewModel
 
-@if (Model.Count() == 0)
+@if (Model.SkillPoints.Count() == 0)
 {
-    <div class="center verCenter">
-        <p>This Sim doesn't have ability points for any skill :(</p>
+    <div class="alert alert-warning">
+        <p>This Sim doesn't have ability points for any skill <strong>:(</strong></p>
     </div>
+    <a asp-action="Profile" asp-route-id="@Model.Sim.SimID" class="btn btn-primary">Back</a>
 }
 else
 {
     <table class="table table-striped table-bordered table-sm">
         <tr>
-            
+
             <th>Skill</th>
             <th>Level</th>
         </tr>
-        @foreach (var item in Model)
+        @foreach (var item in Model.SkillPoints)
         {
             <tr>
                 <td>@item.Skill.Name</td>

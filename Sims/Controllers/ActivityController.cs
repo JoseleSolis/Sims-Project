@@ -102,6 +102,49 @@ namespace Sims.Controllers
             return RedirectToAction("Index");
         }
 
+        public ViewResult Improvement(Guid id)
+        {
+            ActivityImprovementViewModel viewModel = new ActivityImprovementViewModel
+            {
+                Activity = repository.Activities.FirstOrDefault(a => a.ActivityID == id)
+            };
+            ActivityImprovesSkill improvement = repository.ActivityImprovesSkillTable
+                .FirstOrDefault(i => i.ActivityID == id);
+            viewModel.Skills = improvement == null ? repository.Skills : repository.Skills.Where(s => s.SkillID != improvement.SkillID);
 
+            if (improvement != null)
+            {
+                Skill skill = repository.Skills
+                    .FirstOrDefault(s => s.SkillID == improvement.SkillID);
+                viewModel.CurrentImprovedSkillName = skill.Name;
+            }
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult Improvement(ActivityImprovementViewModel viewModel)
+        {
+            ActivityImprovesSkill improvement = new ActivityImprovesSkill
+            {
+                ActivityID = viewModel.Activity.ActivityID,
+                SkillID = viewModel.SkillID
+            };
+
+            improvement.Activity = repository.Activities
+                .FirstOrDefault(a => a.ActivityID == improvement.ActivityID);
+            improvement.Skill = repository.Skills
+                .FirstOrDefault(s => s.SkillID == improvement.SkillID);
+            
+            if (ModelState.IsValid)
+            {
+                repository.SaveActivityImprovesSkill(improvement);
+                TempData["message"] = $"{improvement.Activity.Name} now improves {improvement.Skill.Name}";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                //if enters here there is something wrong with the data values
+                return View(viewModel);
+            }
+        }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sims.Models.Data;
 
 namespace Sims.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210515085915_addNeighborhoodSkill")]
+    partial class addNeighborhoodSkill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,21 +302,6 @@ namespace Sims.Migrations
                     b.HasIndex("NeighborhoodID");
 
                     b.ToTable("NeighborhoodPlaces");
-                });
-
-            modelBuilder.Entity("Sims.Models.Relations.NeighborhoodUpgradesSkill", b =>
-                {
-                    b.Property<Guid>("NeighborhoodID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SkillID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("NeighborhoodID", "SkillID");
-
-                    b.HasIndex("SkillID");
-
-                    b.ToTable("NeighborhoodUpgradesSkill");
                 });
 
             modelBuilder.Entity("Sims.Models.Relations.Perform", b =>
@@ -627,25 +614,6 @@ namespace Sims.Migrations
                     b.Navigation("Neighborhood");
 
                     b.Navigation("Place");
-                });
-
-            modelBuilder.Entity("Sims.Models.Relations.NeighborhoodUpgradesSkill", b =>
-                {
-                    b.HasOne("Sims.Models.Neighborhood", "Neighborhood")
-                        .WithMany()
-                        .HasForeignKey("NeighborhoodID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Sims.Models.Skill", "Skill")
-                        .WithMany()
-                        .HasForeignKey("SkillID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Neighborhood");
-
-                    b.Navigation("Skill");
                 });
 
             modelBuilder.Entity("Sims.Models.Relations.Perform", b =>

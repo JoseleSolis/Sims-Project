@@ -1,0 +1,27 @@
+﻿@model NeighborhoodImprovesSkillViewModel
+
+
+@if (Model.CurrentImprovedSkill != null)
+{
+    <div class="margin">
+        <p>
+            @Model.Neighborhood.Name currently improves @Model.CurrentImprovedSkill skill
+        </p>
+    </div>
+}
+@using (Html.BeginForm("ImproveSkill", "Neighborhood", FormMethod.Post, new { id = "neighborhoodSkill" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(n => n.SkillID)
+        @Html.DropDownListFor(n => n.SkillID, new SelectList(Model.Skills, "SkillID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Neighborhood.NeighborhoodID)
+    @Html.HiddenFor(p => p.Neighborhood.Name)
+    @Html.HiddenFor(p => p.Neighborhood.Description)
+
+
+    <button type="submit" class="btn btn-primary">Accept</button>
+    <a asp-action="Profile" asp-route-id="@Model.Neighborhood.NeighborhoodID" class="btn btn-secondary">Cancel</a>
+
+}

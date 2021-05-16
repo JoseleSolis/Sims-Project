@@ -32,6 +32,7 @@ namespace Sims.Models.Data
         public IQueryable<NeighborhoodDomesticUnits> NeighborhoodDomesticUnitsTable => context.NeighborhoodDomesticUnits;
         public IQueryable<NeighborhoodPlaces> NeighborhoodPlacesTable => context.NeighborhoodPlaces;
         public IQueryable<ProfessionUpgradesSkill> ProfessionUpgradesSkillsTable => context.ProfessionUpgradesSkill;
+        public IQueryable<NeighborhoodUpgradesSkill> NeighborhoodUpgradesSkillsTable => context.NeighborhoodUpgradesSkill;
         public IQueryable<PetLives> PetLivesTable => context.PetLives;
         public IQueryable<SimLives> SimLivesTable => context.SimLives;
         public IQueryable<SimSkills> SimSkillsTable => context.SimSkills;
@@ -434,6 +435,46 @@ namespace Sims.Models.Data
             }
             return dbEntry;
         }
+        public void SaveProfessionUpgradesSkill(ProfessionUpgradesSkill professionSkill)
+        {
+            ProfessionUpgradesSkill dbEntry = context.ProfessionUpgradesSkill
+                .FirstOrDefault(n => n.ProfessionID == professionSkill.ProfessionID);
+
+            if (dbEntry != null) DeleteProfessionUpgradesSkill(professionSkill.ProfessionID);
+            context.ProfessionUpgradesSkill.Add(professionSkill);
+            context.SaveChanges();
+        }
+        public ProfessionUpgradesSkill DeleteProfessionUpgradesSkill(Guid id)
+        {
+            ProfessionUpgradesSkill dbEntry = context.ProfessionUpgradesSkill
+                   .FirstOrDefault(n => n.ProfessionID == id);
+            if (dbEntry != null)
+            {
+                context.ProfessionUpgradesSkill.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public void SaveNeighborhoodUpgradesSkill(NeighborhoodUpgradesSkill neighborhoodSkill)
+        {
+            NeighborhoodUpgradesSkill dbEntry = context.NeighborhoodUpgradesSkill
+                .FirstOrDefault(n => n.NeighborhoodID == neighborhoodSkill.NeighborhoodID);
+
+            if (dbEntry != null) DeleteProfessionUpgradesSkill(neighborhoodSkill.NeighborhoodID);
+            context.NeighborhoodUpgradesSkill.Add(neighborhoodSkill);
+            context.SaveChanges();
+        }
+        public NeighborhoodUpgradesSkill DeleteNeighborhoodUpgradesSkill(Guid id)
+        {
+            NeighborhoodUpgradesSkill dbEntry = context.NeighborhoodUpgradesSkill
+                   .FirstOrDefault(n => n.NeighborhoodID == id);
+            if (dbEntry != null)
+            {
+                context.NeighborhoodUpgradesSkill.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
         public void SavePetLives(PetLives petLives)
         {
             PetLives dbEntry = context.PetLives
@@ -490,5 +531,64 @@ namespace Sims.Models.Data
             }
             return dbEntry;
         }
-    }   
+        public void SaveSimSkills(SimSkills simSkills)
+        {
+            SimSkills dbEntry = context.SimSkills
+                .FirstOrDefault(s => s.SimID == simSkills.SimID && s.SkillID == simSkills.SkillID);
+            if (dbEntry != null) DeleteSimSkills(simSkills.SimID, simSkills.SkillID);
+            context.SimSkills.Add(simSkills);
+            context.SaveChanges();
+        }
+        public SimSkills DeleteSimSkills(Guid SimID, Guid SkillID)
+        {
+            SimSkills dbEntry = context.SimSkills
+            .FirstOrDefault(a => a.SimID == SimID && a.SkillID == SkillID);
+            if (dbEntry != null)
+            {
+                context.SimSkills.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public void SaveActivityImprovesSkill(ActivityImprovesSkill improvement)
+        {
+            ActivityImprovesSkill dbEntry = context.ActivityImprovesSkill
+                .FirstOrDefault(i => i.Activity.ActivityID == improvement.ActivityID);
+
+            if (dbEntry != null) DeleteActivityImprovesSkill(improvement.Activity.ActivityID);
+            context.ActivityImprovesSkill.Add(improvement);
+            context.SaveChanges();
+        }
+        public ActivityImprovesSkill DeleteActivityImprovesSkill(Guid activityID)
+        {
+            ActivityImprovesSkill dbEntry = context.ActivityImprovesSkill
+            .FirstOrDefault(e => e.ActivityID == activityID);
+            if (dbEntry != null)
+            {
+                context.ActivityImprovesSkill.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public void SavePerform(Perform performance)
+        {
+            Perform dbEntry = context.Performances
+                .FirstOrDefault(n => n.SimID == performance.Sim.SimID && n.ActivityID == performance.Activity.ActivityID);
+            if (dbEntry != null)
+                DeletePerform(performance.Sim.SimID, performance.Activity.ActivityID);
+            context.Performances.Add(performance);
+            context.SaveChanges();
+        }
+        public Perform DeletePerform(Guid SimID, Guid ActivityID)
+        {
+            Perform dbEntry = context.Performances
+            .FirstOrDefault(a => a.ActivityID == ActivityID && a.SimID == SimID);
+            if (dbEntry != null)
+            {
+                context.Performances.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+    }
 }

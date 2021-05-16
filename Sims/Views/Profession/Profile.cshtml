@@ -1,0 +1,8 @@
+﻿@model Profession
+<div class="jumbotron margin">
+    <h1 class="display-3">@Model.Name</h1>
+    <p>The basic salary of this profession is @Model.BasicSalary simoleons</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" asp-action="ImproveSkill" asp-route-id="@Model.ProfessionID" role="button">Improve Skill</a>
+    </p>
+</div>

@@ -73,6 +73,48 @@ namespace Sims.Controllers
             }
         }
 
+        
+        public ActionResult Work(Guid id)
+        {
+            var simJob = repository.Exercises.FirstOrDefault(s => s.SimID == id);
+            
+            Sim sim = repository.Sims.FirstOrDefault(s => s.SimID == id);
+            Profession profession = repository.Professions.FirstOrDefault(p => p.ProfessionID == simJob.ProfessionID);
+            sim.Money += simJob.Level * profession.BasicSalary;
+            repository.SaveSim(sim);
+            
+            if (simJob.Level < 10)
+                simJob.Level++;
+            
+            repository.SaveExercise(simJob);
+
+            ProfessionUpgradesSkill upgrade = repository.ProfessionUpgradesSkillsTable.FirstOrDefault(p => p.ProfessionID == profession.ProfessionID);
+            if (upgrade != null)
+            {
+                SimSkills simSkill = repository.SimSkillsTable.FirstOrDefault(s => s.SimID == sim.SimID && s.SkillID == upgrade.SkillID);
+                if (simSkill == null)
+                {
+                    simSkill = new SimSkills
+                    {
+                            Sim = repository.Sims.FirstOrDefault(s => s.SimID == sim.SimID),
+                            Skill = repository.Skills.FirstOrDefault(s => s.SkillID == upgrade.SkillID),
+                            Points = 1
+                    };
+                    repository.SaveSimSkills(simSkill);
+                }
+                else if (simSkill.Points < 10)
+                {
+                        simSkill.Skill = repository.Skills.FirstOrDefault(s => s.SkillID == simSkill.SkillID);
+                        simSkill.Points++;
+                        repository.SaveSimSkills(simSkill);
+                }
+                
+            }
+            return RedirectToAction("Profile", new { id = id });
+        }
+
+                  
+    
         public ViewResult ChooseProfession(Guid id)
         {
 
@@ -94,7 +136,6 @@ namespace Sims.Controllers
 
             return View(simProfession);
         }
-
         [HttpPost]
         public ActionResult ChooseProfession(SimProfessionViewModel simProfession)
         {
@@ -122,7 +163,24 @@ namespace Sims.Controllers
             }
         }
 
-        public ViewResult Skills(Guid simID) => View(repository.SimSkillsTable.Where(s => s.SimID == simID));
+        public ViewResult Skills(Guid id)
+        {
+            SimSkillViewModel viewModel = new SimSkillViewModel
+            {
+                Sim = repository.Sims.FirstOrDefault(s => s.SimID == id),
+                SkillPoints = new List<SkillPoints>()
+            };
+            IEnumerable<SimSkills> thisSimSkills = repository.SimSkillsTable.Where(s => s.SimID == id);
+            
+            foreach (SimSkills skills in thisSimSkills)
+                viewModel.SkillPoints.Add(new SkillPoints
+                {
+                    Skill = repository.Skills.FirstOrDefault(s => s.SkillID == skills.SkillID),
+                    Points = skills.Points
+                });
+            return View(viewModel);
+        }
+        
 
         public ViewResult Activities(Guid id)
         {
@@ -133,19 +191,72 @@ namespace Sims.Controllers
             };
             return View(viewModel);
         }
-
-        /*
         [HttpPost]
-        public ActionResult PerformActivity(SimActivityViewModel viewModel)
+        public ActionResult Activities(SimActivityViewModel viewModel)
         {
-            var requirements = repository.ActivityRequiresSkillTable
+            viewModel.Activities = repository.Activities;
+            var requirements = repository.ActivityRequiresSkillsTable
                 .Where(a => a.ActivityID == viewModel.ActivityID);
-
+      
             var skills = repository.SimSkillsTable
                 .Where(s => s.SimID == viewModel.Sim.SimID);
 
+            
+
+            foreach (ActivityRequiresSkill requirement in requirements)
+            {
+                var temp = skills.FirstOrDefault(s => s.SkillID == requirement.SkillID);
+                if (temp == null || temp.Points < requirement.RequiredPoints)
+                {
+                    string actName = repository.Activities.FirstOrDefault(a => a.ActivityID == requirement.ActivityID).Name;
+                    string skiName = repository.Skills.FirstOrDefault(s => s.SkillID == requirement.SkillID).Name;
+                    string pronoun = viewModel.Sim.Gender == "Masculine" ? "she" : "he";
+                    
+                    ViewBag.Message = $"{viewModel.Sim.Name} couldn't perform the activity {actName} " +
+                        $"because {pronoun} does not fulfill {skiName} required points";
+                    ViewBag.Error = true;
+
+                    return View(viewModel);
+                }
+            }
+            Perform performance = new Perform
+            {
+                Sim = repository.Sims.FirstOrDefault(s => s.SimID == viewModel.Sim.SimID),
+                Activity = repository.Activities.FirstOrDefault(a => a.ActivityID == viewModel.ActivityID),
+                LastPerform = DateTime.Today
+            };
+            repository.SavePerform(performance);
+            ViewBag.Message = $"{performance.Activity.Name} successfully performed ";
+
+            ActivityImprovesSkill improvement = repository.ActivityImprovesSkillTable.FirstOrDefault(i => i.ActivityID == performance.ActivityID);
+            if (improvement != null)
+            {
+                SimSkills simSkill = repository.SimSkillsTable.
+                    FirstOrDefault(s => s.SimID == viewModel.Sim.SimID && s.SkillID == improvement.SkillID);
+                if (simSkill == null)
+                {
+                    simSkill = new SimSkills
+                    {
+                        Sim = repository.Sims.FirstOrDefault(s => s.SimID == viewModel.Sim.SimID),
+                        Skill = repository.Skills.FirstOrDefault(s => s.SkillID == improvement.SkillID),
+                        Points = 1
+                    };
+                    ViewBag.ImprovementMessage = $"{simSkill.Sim.Name} improved {simSkill.Skill.Name}'s skill points";
+                    repository.SaveSimSkills(simSkill);
+                }
+                else if (simSkill.Points < 10)
+                {
+                    simSkill.Skill = repository.Skills.FirstOrDefault(s => s.SkillID == simSkill.SkillID);
+                    simSkill.Points++;
+                    repository.SaveSimSkills(simSkill);
+                    ViewBag.ImprovementMessage = $"{simSkill.Sim.Name} improved {simSkill.Skill.Name}'s skill points";
+                }     
+            }
+
+            ViewBag.Error = false;
+            return View(viewModel);
         }
-        */
+        
        
         
         public ViewResult FilterForm()
@@ -153,7 +264,8 @@ namespace Sims.Controllers
             SimSearchFilterForm form = new SimSearchFilterForm
             {
                 Professions = repository.Professions,
-                Skills = repository.Skills
+                Skills = repository.Skills,
+                Neighborhoods = repository.Neighborhoods
             };
             return View(form);
         }
@@ -175,11 +287,28 @@ namespace Sims.Controllers
             }
             else professionCheck = simPropsCheck;
 
+            var neighborhoodCheck = new List<Sim>();
+            if (form.NeighborhoodID.CompareTo(Guid.Empty) != 0)
+            {
+                foreach (Sim sim in professionCheck)
+                {
+                    var simDomesticUnit = repository.SimLivesTable.FirstOrDefault(s => s.SimID == sim.SimID);
+                    if (simDomesticUnit != null)
+                    {
+                        var domesticUnitNeighborhood = repository.NeighborhoodDomesticUnitsTable.FirstOrDefault(d => d.DomesticUnitID == simDomesticUnit.DomesticUnitID);
+                        if (domesticUnitNeighborhood != null & domesticUnitNeighborhood.NeighborhoodID == form.NeighborhoodID)
+                            neighborhoodCheck.Add(sim);
+                    }
+                }
+            }
+            else neighborhoodCheck = professionCheck;
+
+
             var bySkillPoints = new List<SimSkillPoints>();
             var simsBySkillPoints = new List<Sim>();
             if (form.SkillID.CompareTo(Guid.Empty) != 0)
             {
-                foreach (Sim sim in professionCheck)
+                foreach (Sim sim in neighborhoodCheck)
                 {
                     var simPoints = repository.SimSkillsTable.FirstOrDefault(s => s.SimID == sim.SimID && s.SkillID == form.SkillID);
                     if (simPoints == null)
@@ -195,22 +324,20 @@ namespace Sims.Controllers
                             SkillPoints = simPoints.Points
                         });
                 }
-                bySkillPoints.OrderByDescending(s => s.SkillPoints);
-                for (int i = 0; i < bySkillPoints.Count; i++)
-                    simsBySkillPoints.Add(bySkillPoints[i].Sim);
+                var ordered = bySkillPoints.OrderByDescending(s => s.SkillPoints);
+                foreach (var simPoints in ordered)
+                    simsBySkillPoints.Add(simPoints.Sim);
+                
             }
-            else simsBySkillPoints = professionCheck;
+            else simsBySkillPoints = neighborhoodCheck;
 
             var truncatedList = new List<Sim>();
             int range = Math.Min(simsBySkillPoints.Count, form.FirstHowMany);
             for (int i = 0; i < range; i++)
                 truncatedList.Add(simsBySkillPoints[i]);
             
-            return View(truncatedList);
-                      
+            return View(truncatedList);                 
         }
-        
-       
         
 
         public ViewResult Index() => View(repository.Sims);
@@ -243,7 +370,9 @@ namespace Sims.Controllers
             Sim deletedSim = repository.DeleteSim(simID);
             if (deletedSim != null)
             {
+                
                 TempData["message"] = $"{deletedSim.Name} was deleted";
+                
             }
             return RedirectToAction("Index");
         }

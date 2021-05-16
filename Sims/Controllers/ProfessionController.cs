@@ -18,6 +18,11 @@ namespace Sims.Controllers
             repository = repo;
         }
 
+
+        public ViewResult Profile(Guid id) => View(
+        repository.Professions
+        .FirstOrDefault(p => p.ProfessionID == id));
+
         public ViewResult Index() => View(repository.Professions);
 
         public ViewResult Edit(Guid professionID) =>
@@ -54,5 +59,50 @@ namespace Sims.Controllers
             return RedirectToAction("Index");
         }
 
+        public ViewResult ImproveSkill(Guid id)
+        {
+            ProfessionImprovesSkillViewModel viewModel = new ProfessionImprovesSkillViewModel
+            {
+                Profession = repository.Professions.FirstOrDefault(p => p.ProfessionID == id)
+            };
+            ProfessionUpgradesSkill relation = repository.ProfessionUpgradesSkillsTable
+                .FirstOrDefault(e => e.ProfessionID == viewModel.Profession.ProfessionID);
+            viewModel.Skills = relation == null ? repository.Skills : repository.Skills.Where(n => n.SkillID != relation.SkillID);
+
+            if (relation != null)
+            {
+                Skill skill = repository.Skills
+                    .FirstOrDefault(n => n.SkillID == relation.SkillID);
+                viewModel.CurrentImprovedSkill = skill.Name;
+            }
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ImproveSkill(ProfessionImprovesSkillViewModel viewModel)
+        {
+            ProfessionUpgradesSkill relation = new ProfessionUpgradesSkill
+            {
+                ProfessionID = viewModel.Profession.ProfessionID,
+                SkillID = viewModel.SkillID
+            };
+            relation.Profession = repository.Professions
+                .FirstOrDefault(d => d.ProfessionID == relation.ProfessionID);
+            relation.Skill = repository.Skills
+                .FirstOrDefault(n => n.SkillID == relation.SkillID);
+
+            if (ModelState.IsValid)
+            {
+                repository.SaveProfessionUpgradesSkill(relation);
+                TempData["message"] = $"{relation.Profession.Name} now improves {relation.Skill.Name} skill";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                // if enters here there is something wrong with the data values
+                return View(relation);
+            }
+
+        }
     }
 }

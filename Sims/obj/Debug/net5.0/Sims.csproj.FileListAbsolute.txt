@@ -110,3 +110,8 @@ C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\World\Index.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Profession\Edit.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Profession\Index.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Activity\Improvement.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Profession\ImproveSkill.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Profession\Profile.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Neighborhood\ImproveSkill.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Neighborhood\Profile.cshtml.g.cs
