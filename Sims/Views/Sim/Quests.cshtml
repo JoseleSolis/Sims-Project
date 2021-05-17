@@ -1,0 +1,28 @@
+﻿@model SimQuestViewModel
+
+
+@using (Html.BeginForm("Quests", "Sim", FormMethod.Post, new { id = "simQuests" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(p => p.QuestID)
+        @Html.DropDownListFor(p => p.QuestID, new SelectList(Model.Quests, "QuestID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Travel.Sim.SimID)
+    @Html.HiddenFor(p => p.Travel.Sim.Name)
+    @Html.HiddenFor(p => p.Travel.Sim.LastName)
+    @Html.HiddenFor(p => p.Travel.Sim.Gender)
+    @Html.HiddenFor(p => p.Travel.Sim.Money)
+    @Html.HiddenFor(p => p.Travel.Sim.LifeStage)
+
+    @Html.HiddenFor(p => p.Travel.Date)
+
+    @Html.HiddenFor(p => p.Travel.World.WorldID)
+    @Html.HiddenFor(p => p.Travel.World.Name)
+    @Html.HiddenFor(p => p.Travel.World.Description)
+    
+
+    <button type="submit" class="btn btn-primary">Enter Quest</button>
+    <a asp-action="Profile" asp-route-id="@Model.Travel.SimID" class="btn btn-secondary">Back to profile</a>
+
+}

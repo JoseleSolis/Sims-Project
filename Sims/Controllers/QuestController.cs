@@ -20,6 +20,10 @@ namespace Sims.Controllers
         
         public ActionResult Index() => View(repository.Quests);
 
+        public ViewResult Profile(Guid id) => View(
+           repository.Quests
+            .FirstOrDefault(p => p.QuestID == id));
+
         public ViewResult Edit(Guid questID) =>
            View(repository.Quests
           .FirstOrDefault(q => q.QuestID == questID));
@@ -52,6 +56,50 @@ namespace Sims.Controllers
             }
             return RedirectToAction("Index");
         }
-        
+        public ViewResult World(Guid id)
+        {
+            QuestWorldViewModel viewModel = new QuestWorldViewModel
+            {
+                Quest = repository.Quests.FirstOrDefault(d => d.QuestID == id)
+            };
+            QuestWorld relation = repository.QuestWorldTable
+                .FirstOrDefault(e => e.QuestID == viewModel.Quest.QuestID);
+            
+            viewModel.Worlds = relation == null ? repository.Worlds : repository.Worlds.Where(n => n.WorldID != relation.WorldID);
+
+            if (relation != null)
+            {
+                World world = repository.Worlds
+                    .FirstOrDefault(n => n.WorldID == relation.WorldID);
+                viewModel.CurrentWorldName = world.Name;
+            }
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult World(QuestWorldViewModel viewModel)
+        {
+            QuestWorld relation = new QuestWorld
+            {
+                QuestID = viewModel.Quest.QuestID,
+                WorldID = viewModel.WorldID
+            };
+            relation.Quest = repository.Quests
+                .FirstOrDefault(d => d.QuestID == relation.QuestID);
+            relation.World = repository.Worlds
+                .FirstOrDefault(n => n.WorldID == relation.WorldID);
+
+            if (ModelState.IsValid)
+            {
+                repository.SaveQuestWorld(relation);
+                TempData["message"] = $"{relation.Quest.Name} is now available on {relation.World.Name} world";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                // if enters here there is something wrong with the data values
+                return View(relation);
+            }
+        }
     }
 }

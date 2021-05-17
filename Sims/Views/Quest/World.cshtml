@@ -1,0 +1,29 @@
+﻿@model QuestWorldViewModel
+
+
+@if (Model.CurrentWorldName != null)
+{
+    <div class="margin">
+        <p>
+            @Model.Quest.Name is currently available on @Model.CurrentWorldName world
+        </p>
+    </div>
+}
+@using (Html.BeginForm("World", "Quest", FormMethod.Post, new { id = "questWorld" }))
+{
+    <div class="form-group margin">
+        @Html.LabelFor(n => n.WorldID)
+        @Html.DropDownListFor(n => n.WorldID, new SelectList(Model.Worlds, "WorldID", "Name"), new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(p => p.Quest.QuestID)
+    @Html.HiddenFor(p => p.Quest.Name)
+    @Html.HiddenFor(p => p.Quest.Cost)
+    @Html.HiddenFor(p => p.Quest.Reward)
+    @Html.HiddenFor(p => p.Quest.Description)
+
+
+    <button type="submit" class="btn btn-primary">Accept</button>
+    <a asp-action="Profile" asp-route-id="@Model.Quest.QuestID" class="btn btn-secondary">Cancel</a>
+
+}

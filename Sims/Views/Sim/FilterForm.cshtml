@@ -19,7 +19,7 @@
         @Html.LabelFor(p => p.ProfessionID)
         @Html.DropDownListFor(p => p.ProfessionID, new SelectList(Model.Professions, "ProfessionID", "Name"), "", new { @class = "form-control" })
     </div>
- 
+
     <div class="form-group">
         @Html.LabelFor(p => p.NeighborhoodID)
         @Html.DropDownListFor(p => p.NeighborhoodID, new SelectList(Model.Neighborhoods, "NeighborhoodID", "Name"), "", new { @class = "form-control" })
@@ -32,8 +32,13 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.FirstHowMany)
-        @Html.ValidationMessageFor(m => m.FirstHowMany)
-        @Html.TextBoxFor(m => m.FirstHowMany,new { @class = "form-control"})
+        @Html.ValidationMessageFor(m => m.FirstHowMany, "", new {@class = "text-danger"})
+        @Html.TextBoxFor(m => m.FirstHowMany, new { @class = "form-control", type = "number",min = 1, value = "1"})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.PetOwner)
+        @Html.DropDownListFor(p => p.PetOwner, new SelectList(new List<string> {"Yes", "No"}, "PetOwner"), "Doesn't matter", new { @class = "form-control" })
     </div>
 
     <button type="submit" class="btn btn-primary">Search</button>

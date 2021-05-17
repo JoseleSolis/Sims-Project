@@ -24,5 +24,6 @@ namespace Sims.Models.Relations
         [ForeignKey("SimID,WorldID,Date")]
         public Travel Travel { get; set; }
 
+        public bool Success { get; set; }
     }
 }

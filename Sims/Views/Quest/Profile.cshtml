@@ -1,0 +1,10 @@
+﻿@model Quest
+<div class="jumbotron margin">
+    <h1 class="display-3">@Model.Name</h1>
+    <p class="lead">This quest costs @Model.Cost simoleons and its reward is @Model.Reward simoleons</p>
+    <hr class="my-4">
+    <p>@Model.Description</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg"  asp-action="World" asp-route-id="@Model.QuestID" role="button">World</a>
+    </p>
+</div>

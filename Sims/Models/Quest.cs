@@ -18,5 +18,8 @@ namespace Sims.Models
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Please enter a positive value")]
         public double Reward { get; set; }
+        [Required(ErrorMessage = "Please enter a description")]
+        [StringLength(127, ErrorMessage = "Limit of characters(127) exceeded")]
+        public string Description { get; set; }
     }
 }

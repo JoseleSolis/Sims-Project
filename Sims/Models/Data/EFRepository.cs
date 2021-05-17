@@ -39,7 +39,7 @@ namespace Sims.Models.Data
         public IQueryable<ActivityRequiresSkill> ActivityRequiresSkillsTable => context.ActivityRequiresSkill;
         public IQueryable<ActivityImprovesSkill> ActivityImprovesSkillTable => context.ActivityImprovesSkill;
         public IQueryable<QuestRequiresSkill> QuestRequiresSkillTable => context.QuestRequiresSkill;
-
+        public IQueryable<QuestWorld> QuestWorldTable => context.QuestWorld;
 
         public void SaveSim(Sim sim)
         {
@@ -586,6 +586,58 @@ namespace Sims.Models.Data
             if (dbEntry != null)
             {
                 context.Performances.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public void SaveQuestWorld(QuestWorld questWorld)
+        {
+            QuestWorld dbEntry = context.QuestWorld
+                .FirstOrDefault(n => n.QuestID == questWorld.QuestID);
+
+            if (dbEntry != null) DeleteQuestWorld(questWorld.QuestID);
+            context.QuestWorld.Add(questWorld);
+            context.SaveChanges();
+        }
+        public QuestWorld DeleteQuestWorld(Guid id)
+        {
+            QuestWorld dbEntry = context.QuestWorld
+                   .FirstOrDefault(n => n.QuestID == id);
+            if (dbEntry != null)
+            {
+                context.QuestWorld.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public void SaveTravel(Travel travel)
+        {
+            context.Travels.Add(travel);
+            context.SaveChanges();
+        }
+        public Travel DeleteTravel(Guid SimID, Guid WorldID, DateTime date)
+        {
+            Travel dbEntry = context.Travels
+                   .FirstOrDefault(n => n.SimID == SimID && n.WorldID == WorldID && n.Date == date);
+            if (dbEntry != null)
+            {
+                context.Travels.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+        public void SaveInvolve(Involve involve)
+        {
+            context.Involvements.Add(involve);
+            context.SaveChanges();
+        }
+        public Involve DeleteInvolve(Guid SimID, Guid WorldID, DateTime date, Guid QuestID)
+        {
+            Involve dbEntry = context.Involvements
+                   .FirstOrDefault(n => n.SimID == SimID && n.WorldID == WorldID && n.Date == date && n.QuestID == QuestID);
+            if (dbEntry != null)
+            {
+                context.Involvements.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;

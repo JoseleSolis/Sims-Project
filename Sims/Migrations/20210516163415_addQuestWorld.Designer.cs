@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sims.Models.Data;
 
 namespace Sims.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210516163415_addQuestWorld")]
+    partial class addQuestWorld
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,11 +187,6 @@ namespace Sims.Migrations
                     b.Property<double>("Cost")
                         .HasColumnType("float");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(127)
-                        .HasColumnType("nvarchar(127)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(127)
@@ -267,9 +264,6 @@ namespace Sims.Migrations
 
                     b.Property<Guid>("WorldID")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Success")
-                        .HasColumnType("bit");
 
                     b.HasKey("SimID", "Date", "QuestID", "WorldID");
 

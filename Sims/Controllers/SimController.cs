@@ -73,19 +73,19 @@ namespace Sims.Controllers
             }
         }
 
-        
+
         public ActionResult Work(Guid id)
         {
             var simJob = repository.Exercises.FirstOrDefault(s => s.SimID == id);
-            
+
             Sim sim = repository.Sims.FirstOrDefault(s => s.SimID == id);
             Profession profession = repository.Professions.FirstOrDefault(p => p.ProfessionID == simJob.ProfessionID);
             sim.Money += simJob.Level * profession.BasicSalary;
             repository.SaveSim(sim);
-            
+
             if (simJob.Level < 10)
                 simJob.Level++;
-            
+
             repository.SaveExercise(simJob);
 
             ProfessionUpgradesSkill upgrade = repository.ProfessionUpgradesSkillsTable.FirstOrDefault(p => p.ProfessionID == profession.ProfessionID);
@@ -96,25 +96,25 @@ namespace Sims.Controllers
                 {
                     simSkill = new SimSkills
                     {
-                            Sim = repository.Sims.FirstOrDefault(s => s.SimID == sim.SimID),
-                            Skill = repository.Skills.FirstOrDefault(s => s.SkillID == upgrade.SkillID),
-                            Points = 1
+                        Sim = repository.Sims.FirstOrDefault(s => s.SimID == sim.SimID),
+                        Skill = repository.Skills.FirstOrDefault(s => s.SkillID == upgrade.SkillID),
+                        Points = 1
                     };
                     repository.SaveSimSkills(simSkill);
                 }
                 else if (simSkill.Points < 10)
                 {
-                        simSkill.Skill = repository.Skills.FirstOrDefault(s => s.SkillID == simSkill.SkillID);
-                        simSkill.Points++;
-                        repository.SaveSimSkills(simSkill);
+                    simSkill.Skill = repository.Skills.FirstOrDefault(s => s.SkillID == simSkill.SkillID);
+                    simSkill.Points++;
+                    repository.SaveSimSkills(simSkill);
                 }
-                
+
             }
             return RedirectToAction("Profile", new { id = id });
         }
 
-                  
-    
+
+
         public ViewResult ChooseProfession(Guid id)
         {
 
@@ -171,7 +171,7 @@ namespace Sims.Controllers
                 SkillPoints = new List<SkillPoints>()
             };
             IEnumerable<SimSkills> thisSimSkills = repository.SimSkillsTable.Where(s => s.SimID == id);
-            
+
             foreach (SimSkills skills in thisSimSkills)
                 viewModel.SkillPoints.Add(new SkillPoints
                 {
@@ -180,7 +180,7 @@ namespace Sims.Controllers
                 });
             return View(viewModel);
         }
-        
+
 
         public ViewResult Activities(Guid id)
         {
@@ -197,11 +197,11 @@ namespace Sims.Controllers
             viewModel.Activities = repository.Activities;
             var requirements = repository.ActivityRequiresSkillsTable
                 .Where(a => a.ActivityID == viewModel.ActivityID);
-      
+
             var skills = repository.SimSkillsTable
                 .Where(s => s.SimID == viewModel.Sim.SimID);
 
-            
+
 
             foreach (ActivityRequiresSkill requirement in requirements)
             {
@@ -211,7 +211,7 @@ namespace Sims.Controllers
                     string actName = repository.Activities.FirstOrDefault(a => a.ActivityID == requirement.ActivityID).Name;
                     string skiName = repository.Skills.FirstOrDefault(s => s.SkillID == requirement.SkillID).Name;
                     string pronoun = viewModel.Sim.Gender == "Masculine" ? "she" : "he";
-                    
+
                     ViewBag.Message = $"{viewModel.Sim.Name} couldn't perform the activity {actName} " +
                         $"because {pronoun} does not fulfill {skiName} required points";
                     ViewBag.Error = true;
@@ -250,15 +250,15 @@ namespace Sims.Controllers
                     simSkill.Points++;
                     repository.SaveSimSkills(simSkill);
                     ViewBag.ImprovementMessage = $"{simSkill.Sim.Name} improved {simSkill.Skill.Name}'s skill points";
-                }     
+                }
             }
 
             ViewBag.Error = false;
             return View(viewModel);
         }
-        
-       
-        
+
+
+
         public ViewResult FilterForm()
         {
             SimSearchFilterForm form = new SimSearchFilterForm
@@ -327,21 +327,43 @@ namespace Sims.Controllers
                 var ordered = bySkillPoints.OrderByDescending(s => s.SkillPoints);
                 foreach (var simPoints in ordered)
                     simsBySkillPoints.Add(simPoints.Sim);
-                
+
             }
             else simsBySkillPoints = neighborhoodCheck;
 
+            var petOwnerCheck = new List<Sim>();
+            if (form.PetOwner == "No")
+            {
+                foreach (Sim sim in simsBySkillPoints)
+                {
+                    SimLives simDomesticUnit = repository.SimLivesTable.FirstOrDefault(s => s.SimID == sim.SimID);
+                    if (simDomesticUnit == null || repository.PetLivesTable.First(d => d.DomesticUnitID == simDomesticUnit.DomesticUnitID) == null)
+                        petOwnerCheck.Add(sim);
+                }
+            }
+            else if (form.PetOwner == "Yes")
+            {
+                foreach (Sim sim in simsBySkillPoints)
+                {
+                    SimLives simDomesticUnit = repository.SimLivesTable.FirstOrDefault(s => s.SimID == sim.SimID);
+                    if (simDomesticUnit != null && repository.PetLivesTable.First(d => d.DomesticUnitID == simDomesticUnit.DomesticUnitID) != null)
+                        petOwnerCheck.Add(sim);
+                }
+            }
+            else petOwnerCheck = simsBySkillPoints;
+
+
             var truncatedList = new List<Sim>();
-            int range = Math.Min(simsBySkillPoints.Count, form.FirstHowMany);
+            int range = Math.Min(petOwnerCheck.Count, form.FirstHowMany);
             for (int i = 0; i < range; i++)
-                truncatedList.Add(simsBySkillPoints[i]);
-            
-            return View(truncatedList);                 
+                truncatedList.Add(petOwnerCheck[i]);
+
+            return View(truncatedList);
         }
-        
+
 
         public ViewResult Index() => View(repository.Sims);
-        
+
         public ViewResult Edit(Guid simID) =>
            View(repository.Sims
                .FirstOrDefault(s => s.SimID == simID));
@@ -358,24 +380,107 @@ namespace Sims.Controllers
             }
             else
             {
-                 //if enters here there is something wrong with the data values
+                //if enters here there is something wrong with the data values
                 return View(sim);
             }
         }
         public ViewResult Create() => View("Edit", new Sim());
-         
+
         [HttpPost]
         public IActionResult Delete(Guid simID)
         {
             Sim deletedSim = repository.DeleteSim(simID);
             if (deletedSim != null)
             {
-                
+
                 TempData["message"] = $"{deletedSim.Name} was deleted";
-                
+
             }
             return RedirectToAction("Index");
         }
-        
+
+        public ViewResult Travel(Guid id)
+        {
+            SimTravelViewModel simTravel = new SimTravelViewModel
+            {
+                Sim = repository.Sims.FirstOrDefault(s => s.SimID == id),
+                Worlds = repository.Worlds
+            };
+            return View(simTravel);
+        }
+
+        [HttpPost]
+        public ActionResult Travel(SimTravelViewModel viewModel)
+        {
+            Travel travel = new Travel
+            {
+                SimID = viewModel.Sim.SimID,
+                WorldID = viewModel.WorldID
+            };
+
+            travel.Sim = repository.Sims
+                .FirstOrDefault(s => s.SimID == travel.SimID);
+
+            travel.World = repository.Worlds
+                .FirstOrDefault(d => d.WorldID == viewModel.WorldID);
+
+            travel.Date = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                repository.SaveTravel(travel);
+                return RedirectToAction("Quests", travel);
+            }
+            else
+            {
+                //if enters here there is something wrong with the data values
+                return View(viewModel);
+            }
+        }
+
+        public ViewResult Quests(Travel travel)
+        {
+            var questsInWorld = repository.QuestWorldTable.Where(w => w.WorldID == travel.WorldID);
+            var quests = new List<Quest>();
+            foreach (QuestWorld item in questsInWorld)
+                quests.Add(repository.Quests.FirstOrDefault(q => q.QuestID == item.QuestID));
+
+            SimQuestViewModel viewModel = new SimQuestViewModel
+            {
+                Travel = travel,
+                Quests = quests
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Quests(SimQuestViewModel viewModel)
+        {
+            Involve travelInvolveQuest = new Involve
+            {
+                SimID = viewModel.Travel.SimID,
+                WorldID = viewModel.Travel.WorldID,
+                Date = viewModel.Travel.Date,
+                QuestID = viewModel.QuestID
+            };
+
+            travelInvolveQuest.Quest = repository.Quests.FirstOrDefault(q => q.QuestID == travelInvolveQuest.QuestID);
+           
+            travelInvolveQuest.Travel = repository.Travels
+                .FirstOrDefault(q => 
+                    q.SimID == travelInvolveQuest.SimID &&
+                    q.WorldID == travelInvolveQuest.WorldID &&
+                    q.Date == travelInvolveQuest.Date
+                    );
+
+            Random r = new Random();
+            travelInvolveQuest.Success = (r.Next(23) % 2 == 0);
+
+
+            repository.SaveInvolve(travelInvolveQuest);
+
+            return RedirectToAction("Profile", new { id = travelInvolveQuest.SimID});
+
+        }
     }
 }

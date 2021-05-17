@@ -33,7 +33,7 @@ namespace Sims.Models.Data
         IQueryable<SimSkills> SimSkillsTable { get; }
         IQueryable<ActivityImprovesSkill> ActivityImprovesSkillTable { get; }
         IQueryable<QuestRequiresSkill> QuestRequiresSkillTable { get; }
-
+        IQueryable<QuestWorld> QuestWorldTable { get; }
 
 
         void SaveSim(Sim sim);
@@ -56,6 +56,8 @@ namespace Sims.Models.Data
         Quest DeleteQuest(Guid id);
         void SaveProfession(Profession profession);
         Profession DeleteProfession(Guid id);
+
+
 
 
         void SaveActivityRequiresSkill(ActivityRequiresSkill activityRequiresSkill);
@@ -82,7 +84,12 @@ namespace Sims.Models.Data
         NeighborhoodPlaces DeleteNeighborhoodPlace(Guid id);
         void SavePerform(Perform performance);
         Perform DeletePerform(Guid SimID,Guid ActivityID);
-        
+        void SaveQuestWorld(QuestWorld questWorld);
+        QuestWorld DeleteQuestWorld(Guid id);
+        void SaveTravel(Travel travel);
+        Travel DeleteTravel(Guid SimID, Guid WorldID, DateTime date);
+        void SaveInvolve(Involve involve);
+        Involve DeleteInvolve(Guid SimID, Guid WorldID, DateTime date, Guid QuestID);
 
 
 

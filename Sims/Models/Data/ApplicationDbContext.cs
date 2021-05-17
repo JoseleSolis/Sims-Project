@@ -38,6 +38,7 @@ namespace Sims.Models.Data
         public DbSet<SimLives> SimLives { get; set; }
         public DbSet<SimSkills> SimSkills { get; set; }
         public DbSet<Travel> Travels { get; set; }
+        public DbSet<QuestWorld> QuestWorld { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

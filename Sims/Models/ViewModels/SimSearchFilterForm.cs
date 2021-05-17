@@ -12,7 +12,7 @@ namespace Sims.Models.ViewModels
         public Guid ProfessionID { get; set; }
         public IEnumerable<Profession> Professions { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a non-negative value")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a positive value")]
         [Display(Name = "Show Firsts")]
         public int FirstHowMany { get; set; }
         [Display(Name = "Order by Skill")]
@@ -21,6 +21,8 @@ namespace Sims.Models.ViewModels
         [Display(Name = "Neighborhood")]
         public Guid NeighborhoodID { get; set; }
         public IEnumerable<Neighborhood> Neighborhoods { get; set; }
+        [Display(Name = "Pet Owner")]
+        public string PetOwner { get; set; }
 
 
     }

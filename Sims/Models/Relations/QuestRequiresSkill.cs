@@ -13,7 +13,6 @@ namespace Sims.Models.Relations
         public Guid SkillID { get; set; }
         [ForeignKey("SkillID")]
         public Skill Skill { get; set; }
-
         [Key, Column(Order = 1)]
         public Guid QuestID { get; set; }
         [ForeignKey("QuestID")]
