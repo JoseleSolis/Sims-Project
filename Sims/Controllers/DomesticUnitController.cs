@@ -55,6 +55,14 @@ namespace Sims.Controllers
             {
                 TempData["message"] = $"{deletedDomesticUnit.Name} was deleted";
             }
+
+            if (repository.NeighborhoodDomesticUnitsTable.FirstOrDefault(d => d.DomesticUnitID == domesticUnitID) != null)
+                repository.DeleteNeighborhoodDomesticUnit(domesticUnitID);
+            foreach (var item in repository.SimLivesTable.Where(d => d.DomesticUnitID == domesticUnitID))
+                repository.DeleteSimLives(item.SimID);
+            foreach (var item in repository.PetLivesTable.Where(d => d.DomesticUnitID == domesticUnitID))
+                repository.DeletePetLives(item.PetID);
+
             return RedirectToAction("Index");
         }
 

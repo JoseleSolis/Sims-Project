@@ -16,16 +16,62 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="navbar-brand">
-                            <img src="~/images/logos/logo1.png" alt=""/>
+                            <img src="~/images/logos/logo1.png" alt="" />
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Sim" asp-action="Index">Sims</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Activity" asp-action="Index">Activities</a>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="DomesticUnit" asp-action="Index">Domestic Units</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Neighborhood" asp-action="Index">Neighborhoods</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Place" asp-action="Index">Places</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-paw" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Pet" asp-action="Index">Pets</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="PetType" asp-action="Index">Pet Types</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-rocket" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="World" asp-action="Index">Worlds</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Quest" asp-action="Index">Quests</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-suitcase" aria-hidden="true"></i>
+
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Activity" asp-action="Index">Activities</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Profession" asp-action="Index">Professions</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Skill" asp-action="Index">Skills</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -40,7 +86,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Sims - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Sims 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

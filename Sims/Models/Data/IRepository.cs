@@ -62,6 +62,9 @@ namespace Sims.Models.Data
 
         void SaveActivityRequiresSkill(ActivityRequiresSkill activityRequiresSkill);
         ActivityRequiresSkill DeleteActivityRequiresSkill(Guid ActivityID, Guid SkillID);
+
+        void SaveQuestRequiresSkill(QuestRequiresSkill questRequiresSkill);
+        QuestRequiresSkill DeleteQuestRequiresSkill(Guid QuestID, Guid SkillID);
         void SaveSimSkills(SimSkills simSkills);
         SimSkills DeleteSimSkills(Guid SimID, Guid SkillID);
         void SaveActivityImprovesSkill(ActivityImprovesSkill activityImprovesSkill);

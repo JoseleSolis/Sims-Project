@@ -55,6 +55,8 @@ namespace Sims.Controllers
             {
                 TempData["message"] = $"{deletedPlace.Name} was deleted";
             }
+            if (repository.NeighborhoodPlacesTable.FirstOrDefault(p => p.PlaceID == placeID) != null)
+                repository.DeleteNeighborhoodPlace(placeID);
             return RedirectToAction("Index");
         }
 

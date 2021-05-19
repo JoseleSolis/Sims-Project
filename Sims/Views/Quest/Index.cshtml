@@ -1,20 +1,19 @@
 ﻿@model IEnumerable<Quest>
 @{
     ViewBag.Title = "All Quests";
-    
+    Layout = "_IndexLayout";
 }
 <table class="table table-striped table-bordered table-sm">
     <tr>
-        <th class="text-right">ID</th>
+        
         <th>Name</th>
-        <th>Cost</th>
-        <th>Reward</th>
+        <th><a class="nav-link" asp-action="CostInfo">Cost</a></th>
+        <th><a class="nav-link" asp-action="RewardInfo">Reward</a></th>
         <th class="text-center"></th>
     </tr>
     @foreach (var item in Model)
     {
         <tr>
-            <td class="text-right">@item.QuestID</td>
             <td>
                 <a class="nav-link" asp-action="Profile" asp-route-id="@item.QuestID">@item.Name</a>
             </td>

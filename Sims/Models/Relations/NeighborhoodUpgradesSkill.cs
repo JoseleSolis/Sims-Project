@@ -9,12 +9,12 @@ namespace Sims.Models.Relations
 {
     public class NeighborhoodUpgradesSkill
     {
-        [Key, Column(Order = 0)]
+        [Key]
         public Guid NeighborhoodID { get; set; }
         [ForeignKey("NeighborhoodID")]
         public Neighborhood Neighborhood { get; set; }
 
-        [Key, Column(Order = 1)]
+        
         public Guid SkillID { get; set; }
         [ForeignKey("SkillID")]
 

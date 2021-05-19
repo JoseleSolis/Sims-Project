@@ -18,9 +18,55 @@ namespace Sims.Controllers
             repository = repo;
         }
 
-        public ViewResult Profile(Guid id) => View(
-             repository.Neighborhoods
-                .FirstOrDefault(p => p.NeighborhoodID == id));
+        public ViewResult Profile(Guid id)
+        {
+            var NeighborhoodPets = new List<Pet>();
+           
+            var housesOnNeighborhoodID = repository.NeighborhoodDomesticUnitsTable.Where(m => m.NeighborhoodID == id);
+            var housesOnNeighborhood = new List<DomesticUnit>();
+           
+            foreach (NeighborhoodDomesticUnits item in housesOnNeighborhoodID)
+               housesOnNeighborhood.Add(repository.DomesticUnits.FirstOrDefault(d => d.DomesticUnitID == item.DomesticUnitID));
+
+            var petDomesticUnits = new List<PetLives>();
+            foreach (DomesticUnit item in housesOnNeighborhood)
+            {
+                var collection = repository.PetLivesTable.Where(d => d.DomesticUnitID == item.DomesticUnitID);
+                foreach (PetLives petHouse in collection)
+                    petDomesticUnits.Add(petHouse);
+            }
+
+            var pets = new List<Pet>();
+           
+            foreach (PetLives item in petDomesticUnits)
+                pets.Add(repository.Pets.FirstOrDefault(p => p.PetID == item.PetID));
+
+            Dictionary<string, int> petTypeCount = new Dictionary<string, int>();
+            foreach (Pet pet in pets)
+            {
+                if (petTypeCount.ContainsKey(pet.TypeName))
+                    petTypeCount[pet.TypeName]++;
+                else petTypeCount.Add(pet.TypeName, 1);
+            }
+            
+            string popularPet = "";
+            int max = 0;
+            foreach (string Key in petTypeCount.Keys)
+                if(petTypeCount[Key] > max) 
+                {
+                    max = petTypeCount[Key];
+                    popularPet = Key;
+                }
+            
+
+            NeighborhoodProfileViewModel viewModel = new NeighborhoodProfileViewModel
+            {
+                Neighborhood = repository.Neighborhoods.FirstOrDefault(n => n.NeighborhoodID == id),
+                MostPopularPetType = popularPet
+            };
+            return View(viewModel);
+        }
+        
         public ViewResult Index() => View(repository.Neighborhoods);
 
         public ViewResult Edit(Guid neighborhoodID) =>
@@ -54,6 +100,12 @@ namespace Sims.Controllers
             {
                 TempData["message"] = $"{deletedNeighborhood.Name} was deleted";
             }
+            foreach (var item in repository.NeighborhoodDomesticUnitsTable.Where(n => n.NeighborhoodID == neighborhoodID))
+                repository.DeleteNeighborhoodDomesticUnit(item.DomesticUnitID);
+            foreach (var item in repository.NeighborhoodPlacesTable.Where(n => n.NeighborhoodID == neighborhoodID))
+                repository.DeleteNeighborhoodPlace(item.PlaceID);
+            if (repository.NeighborhoodUpgradesSkillsTable.FirstOrDefault(n => n.NeighborhoodID == neighborhoodID) != null)
+                repository.DeleteNeighborhoodUpgradesSkill(neighborhoodID);
             return RedirectToAction("Index");
         }
 

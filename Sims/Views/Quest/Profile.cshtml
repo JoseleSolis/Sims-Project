@@ -5,6 +5,8 @@
     <hr class="my-4">
     <p>@Model.Description</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg"  asp-action="World" asp-route-id="@Model.QuestID" role="button">World</a>
+        <a class="btn btn-primary btn-lg" asp-action="World" asp-route-id="@Model.QuestID" role="button">World</a>
+        <a class="btn btn-secondary btn-lg space" asp-action="Requirements" asp-route-id="@Model.QuestID" role="button">Requirements</a>
     </p>
+    <a class="btn btn-success btn-lg space right" asp-action="Index" role="button">Back to index</a>
 </div>

@@ -47,8 +47,6 @@ namespace Sims.Models.Data
             modelBuilder.Entity<Involve>().HasKey(m => new { m.SimID, m.Date, m.QuestID, m.WorldID });
             modelBuilder.Entity<Perform>().HasKey(m => new { m.SimID, m.ActivityID });
             modelBuilder.Entity<Travel>().HasKey(m => new { m.SimID, m.WorldID, m.Date });           
-            modelBuilder.Entity<ProfessionUpgradesSkill>().HasKey(m => new { m.ProfessionID, m.SkillID });
-            modelBuilder.Entity<NeighborhoodUpgradesSkill>().HasKey(m => new { m.NeighborhoodID, m.SkillID });
             modelBuilder.Entity<SimSkills>().HasKey(m => new { m.SimID, m.SkillID });
             modelBuilder.Entity<QuestRequiresSkill>().HasKey(m => new { m.SkillID, m.QuestID });
 

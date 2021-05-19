@@ -1,8 +1,18 @@
-﻿@model Neighborhood
+﻿@model NeighborhoodProfileViewModel
 <div class="jumbotron margin">
-    <h1 class="display-3">@Model.Name</h1>
-    <p>@Model.Description</p>
+    <h1 class="display-3">@Model.Neighborhood.Name</h1>
+    @if (Model.MostPopularPetType == null)
+    {
+        <p class="lead"> Nobody in this neighborhood has a pet... so sad :(</p>
+    }
+    else
+    {
+        <p class="lead"> Currently, @Model.MostPopularPetType is the most popular type of pet in the neighborhood</p>
+    }
+    <hr class="my-4">
+    <p>@Model.Neighborhood.Description</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg" asp-action="ImproveSkill" asp-route-id="@Model.NeighborhoodID" role="button">Improve Skill</a>
+        <a class="btn btn-primary btn-lg" asp-action="ImproveSkill" asp-route-id="@Model.Neighborhood.NeighborhoodID" role="button">Improve Skill</a>
     </p>
+    <a class="btn btn-success btn-lg space right" asp-action="Index" role="button">Back to index</a>
 </div>

@@ -531,6 +531,22 @@ namespace Sims.Models.Data
             }
             return dbEntry;
         }
+        public void SaveQuestRequiresSkill(QuestRequiresSkill questRequiresSkill)
+        {
+            context.QuestRequiresSkill.Add(questRequiresSkill);
+            context.SaveChanges();
+        }
+        public QuestRequiresSkill DeleteQuestRequiresSkill(Guid QuestID, Guid SkillID)
+        {
+            QuestRequiresSkill dbEntry = context.QuestRequiresSkill
+                .FirstOrDefault(a => a.QuestID == QuestID && a.SkillID == SkillID);
+            if (dbEntry != null)
+            {
+                context.QuestRequiresSkill.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
         public void SaveSimSkills(SimSkills simSkills)
         {
             SimSkills dbEntry = context.SimSkills

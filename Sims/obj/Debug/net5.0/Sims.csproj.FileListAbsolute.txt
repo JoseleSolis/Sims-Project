@@ -96,7 +96,6 @@ C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Place\Profile.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\Edit.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\Index.cshtml.g.cs
-C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Shared\_AdminLayout.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Sim\Activities.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Sim\ChooseDomesticUnit.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Sim\ChooseProfession.cshtml.g.cs
@@ -119,3 +118,7 @@ C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\World.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Sim\Travel.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Sim\Quests.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\CostInfo.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\RewardInfo.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\Requirements.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Shared\_IndexLayout.cshtml.g.cs

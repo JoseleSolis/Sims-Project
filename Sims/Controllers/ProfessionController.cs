@@ -56,7 +56,12 @@ namespace Sims.Controllers
             {
                 TempData["message"] = $"{deletedProfession.Name} was deleted";
             }
+            foreach (var item in repository.Exercises.Where(p => p.ProfessionID == professionID))
+                repository.DeleteExercise(item.SimID);
+            if (repository.ProfessionUpgradesSkillsTable.FirstOrDefault(p => p.ProfessionID == professionID) != null)
+                repository.DeleteProfessionUpgradesSkill(professionID);
             return RedirectToAction("Index");
+
         }
 
         public ViewResult ImproveSkill(Guid id)

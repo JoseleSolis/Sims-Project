@@ -318,7 +318,7 @@ namespace Sims.Migrations
                     b.Property<Guid>("SkillID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("NeighborhoodID", "SkillID");
+                    b.HasKey("NeighborhoodID");
 
                     b.HasIndex("SkillID");
 
@@ -366,7 +366,7 @@ namespace Sims.Migrations
                     b.Property<Guid>("SkillID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ProfessionID", "SkillID");
+                    b.HasKey("ProfessionID");
 
                     b.HasIndex("SkillID");
 

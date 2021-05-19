@@ -9,12 +9,12 @@ namespace Sims.Models.Relations
 {
     public class ProfessionUpgradesSkill
     {
-        [Key, Column(Order = 0)]
+        [Key]
         public Guid ProfessionID { get; set; }
         [ForeignKey("ProfessionID")]
         public Profession Profession { get; set; }
 
-        [Key, Column(Order = 1)]
+        
         public Guid SkillID { get; set; }
         [ForeignKey("SkillID")]
 

@@ -55,6 +55,14 @@ namespace Sims.Controllers
             {
                 TempData["message"] = $"{deletedActivity.Name} was deleted";
             }
+
+            if (repository.ActivityImprovesSkillTable.FirstOrDefault(a => a.ActivityID == activityID) != null)
+                repository.DeleteActivityImprovesSkill(activityID);
+            foreach (var item in repository.ActivityRequiresSkillsTable.Where(s => s.ActivityID == activityID))
+                repository.DeleteActivityRequiresSkill(activityID, item.SkillID);
+
+            
+
             return RedirectToAction("Index");
         }
 

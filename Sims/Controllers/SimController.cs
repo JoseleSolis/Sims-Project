@@ -392,10 +392,12 @@ namespace Sims.Controllers
             Sim deletedSim = repository.DeleteSim(simID);
             if (deletedSim != null)
             {
-
                 TempData["message"] = $"{deletedSim.Name} was deleted";
-
             }
+            if(repository.Exercises.FirstOrDefault(s=>s.SimID == simID) != null) repository.DeleteExercise(simID);
+            if (repository.SimLivesTable.FirstOrDefault(s => s.SimID == simID) != null) repository.DeleteSimLives(simID);
+            foreach (var item in repository.SimSkillsTable.Where(s=>s.SimID == simID))
+                repository.DeleteSimSkills(simID, item.SkillID);
             return RedirectToAction("Index");
         }
 
@@ -424,10 +426,16 @@ namespace Sims.Controllers
             travel.World = repository.Worlds
                 .FirstOrDefault(d => d.WorldID == viewModel.WorldID);
 
-            travel.Date = DateTime.Now;
+            travel.Date = DateTime.Today;
 
             if (ModelState.IsValid)
             {
+                if(repository.Travels.FirstOrDefault(s=>s.SimID == travel.SimID && s.WorldID == travel.WorldID && s.Date.CompareTo(travel.Date) == 0) != null)
+                {
+                    ViewBag.Message = $"{travel.Sim.Name} cannot travel again to {travel.World.Name} today";
+                    ViewBag.Success = false;
+                    return View("Profile", travel.Sim);
+                }
                 repository.SaveTravel(travel);
                 return RedirectToAction("Quests", travel);
             }
@@ -456,6 +464,32 @@ namespace Sims.Controllers
         [HttpPost]
         public ActionResult Quests(SimQuestViewModel viewModel)
         {
+            Sim sim = repository.Sims.FirstOrDefault(s => s.SimID == viewModel.Travel.SimID);
+            Quest quest = repository.Quests.FirstOrDefault(q => q.QuestID == viewModel.QuestID);
+            string pronoun = sim.Gender == "Masculine" ? "she" : "he";
+
+            if (sim.Money < quest.Cost)
+            {
+                ViewBag.Message = $"{sim.Name} couldn't enter to {quest.Name} quest because {pronoun} can't afford it";
+                ViewBag.Success = false;
+                return View("Profile", sim);
+            }
+            
+            var simSkills = repository.SimSkillsTable.Where(s => s.SimID == viewModel.Travel.SimID);
+            var questReq = repository.QuestRequiresSkillTable.Where(q => q.QuestID == viewModel.QuestID);
+            foreach (QuestRequiresSkill item in questReq)
+            {
+                
+                SimSkills temp = simSkills.FirstOrDefault(s => s.SkillID == item.SkillID);
+                if (temp == null || temp.Points < item.RequiredPoints)
+                {                 
+                    Skill skill = repository.Skills.FirstOrDefault(s => s.SkillID == item.SkillID);
+                    ViewBag.Message = $"{sim.Name} couldn't enter to {quest.Name} quest because {pronoun} lacks {skill.Name} skill points";
+                    ViewBag.Success = false;
+                    return View("Profile", sim);
+                }
+            }
+
             Involve travelInvolveQuest = new Involve
             {
                 SimID = viewModel.Travel.SimID,
@@ -470,7 +504,7 @@ namespace Sims.Controllers
                 .FirstOrDefault(q => 
                     q.SimID == travelInvolveQuest.SimID &&
                     q.WorldID == travelInvolveQuest.WorldID &&
-                    q.Date == travelInvolveQuest.Date
+                    q.Date.CompareTo(travelInvolveQuest.Date) == 0 
                     );
 
             Random r = new Random();
@@ -479,8 +513,32 @@ namespace Sims.Controllers
 
             repository.SaveInvolve(travelInvolveQuest);
 
-            return RedirectToAction("Profile", new { id = travelInvolveQuest.SimID});
+            Sim updateSim = new Sim
+            {
+                SimID = sim.SimID,
+                LifeStage = sim.LifeStage,
+                Gender = sim.Gender,
+                LastName = sim.LastName,
+                Name = sim.Name
+            };
+            if (travelInvolveQuest.Success) 
+            {
+                updateSim.Money = sim.Money + (quest.Reward - quest.Cost);
+                ViewBag.Message = $"{sim.Name} succeeded at {quest.Name} quest and earned {quest.Reward - quest.Cost} simoleons";
+                ViewBag.Success = true;
+            }
+            else
+            {
+                double money = sim.Money - quest.Cost;
+                if (money < 0) money = 0;
+                updateSim.Money = money;
+                ViewBag.Message = $"{sim.Name} failed at {quest.Name} quest and lost {quest.Cost} simoleons";
+                ViewBag.Success = false;
+            }
 
+            repository.SaveSim(updateSim);
+
+            return View("Profile", updateSim);
         }
     }
 }

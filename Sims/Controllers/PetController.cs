@@ -72,7 +72,11 @@ namespace Sims.Controllers
             {
                 TempData["message"] = $"{deletedPet.Name} was deleted";
             }
+            if (repository.PetLivesTable.FirstOrDefault(p => p.PetID == petID) != null)
+                repository.DeletePetLives(petID);
+
             return RedirectToAction("Index");
+            
         }
 
         public ViewResult DomesticUnit(Guid id)
