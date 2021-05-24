@@ -122,3 +122,4 @@ C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\RewardInfo.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Quest\Requirements.cshtml.g.cs
 C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Shared\_IndexLayout.cshtml.g.cs
+C:\Users\Jose Alejandro\Documents\asp .net\Projects\Sims\Sims\Sims\obj\Debug\net5.0\Razor\Views\Shared\_OpacLayout.cshtml.g.cs
