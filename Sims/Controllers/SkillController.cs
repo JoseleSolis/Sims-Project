@@ -41,9 +41,9 @@ namespace Sims.Controllers
 
         public ViewResult Create() => View("Edit", new Skill());
 
-        /*
+        
         [HttpPost]
-        public IActionResult Delete(int skillID)
+        public IActionResult Delete(Guid skillID)
         {
             Skill deletedSkill = repository.DeleteSkill(skillID);
             if (deletedSkill != null)
@@ -52,6 +52,6 @@ namespace Sims.Controllers
             }
             return RedirectToAction("Index");
         }
-        */
+        
     }
 }

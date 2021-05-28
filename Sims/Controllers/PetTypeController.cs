@@ -46,6 +46,10 @@ namespace Sims.Controllers
         [HttpPost]
         public IActionResult Delete(Guid typeID)
         {
+            var pets = repository.Pets.Where(p => p.Type.TypeID == typeID).ToList();
+            foreach (var pet in pets)
+                repository.DeletePet(pet.PetID);
+            
             PetType deletedType = repository.DeletePetType(typeID);
             if (deletedType != null)
             {
